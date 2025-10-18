@@ -1,0 +1,23 @@
+{
+  "name": "cv-generator",
+  "version": "1.0.0",
+  "description": "A CV generator application that allows users to create and download CVs using predefined templates.",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server"
+  },
+  "dependencies": {
+    "html2pdf.js": "^0.10.1"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.1"
+  },
+  "keywords": [
+    "CV",
+    "generator",
+    "templates",
+    "PDF"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}
