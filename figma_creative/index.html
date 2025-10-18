@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Creative CV</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <div class="creative-card">
+    <div class="hero" data-accent>
+      <div class="top-row">
+        <div class="avatar"><img data-field="photo" alt="photo"></div>
+        <div class="title">
+          <div class="name"><span data-field="firstName"></span> <span data-field="lastName"></span></div>
+          <div class="summary" data-field="summary"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="body">
+      <section class="left">
+        <h4 data-accent>Work Experience</h4>
+        <div data-field="experiences"></div>
+
+        <h4 data-accent>Education</h4>
+        <div data-field="education"></div>
+      </section>
+
+      <aside class="right">
+        <h4 data-accent>Personal</h4>
+        <div data-field="address"></div>
+        <div data-field="email"></div>
+        <div data-field="phone"></div>
+
+        <h4 data-accent>Skills</h4>
+        <div data-field="skills"></div>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

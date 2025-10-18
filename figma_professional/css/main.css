@@ -1,0 +1,100 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  font-size: 14px;
+  font-family: Inter,Arial,sans-serif;
+  background: transparent;
+  padding: 24px;
+  color: #0f172a;
+  -webkit-font-smoothing:antialiased;
+}
+.v17_2 {
+  width: 763px;
+  height: 1051px;
+  background: url("../images/v17_2.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  overflow: hidden;
+}
+.v5_375 {
+  width: 712px;
+  height: 1000px;
+  background: rgba(0,0,0,0.10000000149011612);
+  opacity: 1;
+  position: absolute;
+  top: 51px;
+  left: 51px;
+  overflow: hidden;
+}
+.v5_374 {
+  width: 712px;
+  height: 100%;
+  background: url("../images/v5_374.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  overflow: hidden;
+}
+.pro-card {
+  display: flex;
+  max-width: 920px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #e6e9ef;
+  background: #fff;
+  box-sizing:border-box;
+}
+.pro-card .left {
+  background: #f8fafc;
+  padding: 22px;
+  width: 260px;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+}
+.pro-card .avatar img{
+  width:120px;
+  height:120px;
+  border-radius:8px;
+  object-fit:cover;
+  display:block;
+}
+.pro-card .name{font-size:20px;font-weight:700;margin-top:10px}
+.contact{font-size:13px;color:#475569;margin-top:8px;line-height:1.35}
+
+/* Skills block */
+.skills{margin-top:12px}
+.skills h4{margin:8px 0 6px;font-size:13px}
+.skills div{font-size:13px}
+
+/* Right content */
+.pro-card .right{padding:20px;flex:1;box-sizing:border-box}
+.summary h3, .experience h3, .education h3{margin:14px 0 6px;font-size:14px;color:#334155}
+
+/* Ensure accent works if var(--accent-color) used in template */
+[data-accent]{
+  background:var(--accent-color, transparent);
+  border-color:var(--accent-color, transparent);
+}
+
+/* ensure headings inside accent are readable (fallback to white) */
+[data-accent] h1,[data-accent] h2,[data-accent] h3,[data-accent] h4{ color:#ffffff; }
+
+/* print support */
+*{ -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+@media print{
+  .pro-card{box-shadow:none;border:0;padding:10mm}
+  .pro-card .left{background:var(--accent-color,#f8fafc)}
+  section{break-inside:avoid-page}
+}
