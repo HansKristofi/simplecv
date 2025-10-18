@@ -119,7 +119,7 @@
 
       // inject helper script to clear template text and accept postMessage
       // Inject small helper script to accept postMessage to populate fields.
-      // Improved: set --accent-color on :root, inject small accent stylesheet into iframe, and apply accent class
+      // Improved: only apply accent when the template actually contains [data-accent] and don't force .name to white.
       const helperScript = `
 <script>
   (function(){
@@ -163,7 +163,7 @@
       s.textContent = "\\
       :root { --accent-color: var(--accent-color, #0b6bfd); }\\
       .has-accent [data-accent], [data-accent].accent-applied { background-color: var(--accent-color) !important; border-color: var(--accent-color) !important; }\\
-      /* headings inside accent areas should be white for contrast */\\
+      /* only headings inside accent areas should be forced white for contrast; do NOT force .name */\\
       .has-accent [data-accent] h1, .has-accent [data-accent] h2, .has-accent [data-accent] h3, .has-accent [data-accent] h4, .has-accent [data-accent] h5, .has-accent [data-accent] h6,\\
       .accent-applied h1, .accent-applied h2, .accent-applied h3, .accent-applied h4, .accent-applied h5, .accent-applied h6 { color: #ffffff !important; }\\
       ";
@@ -172,20 +172,23 @@
 
     function applyAccent(color){
       try {
-        // set root variable so templates using var(--accent-color) pick it up
-        if(color){
+        // only add accent class/vars when template actually contains accent regions
+        var hasAccentRegions = !!document.querySelector('[data-accent]');
+        if(color && hasAccentRegions){
           document.documentElement.style.setProperty('--accent-color', color);
           document.body.classList.add('has-accent');
         } else {
           document.documentElement.style.removeProperty('--accent-color');
           document.body.classList.remove('has-accent');
         }
-        // also set per-element fallback and mark them for heading color forcing
+        // per-element fallback for [data-accent] elements only
         document.querySelectorAll('[data-accent]').forEach(function(el){
           if(color){
             el.style.setProperty('--accent-color', color);
-            // keep background/border fallback
-            el.style.backgroundColor = getComputedStyle(el).backgroundColor ? '' : color;
+            // leave computed background if present, otherwise set fallback
+            if(!getComputedStyle(el).backgroundColor || getComputedStyle(el).backgroundColor === 'rgba(0, 0, 0, 0)'){
+              el.style.backgroundColor = color;
+            }
             el.style.borderColor = color;
             el.classList.add('accent-applied');
           } else {
@@ -361,12 +364,9 @@
             const accentEls = Array.from(doc.querySelectorAll('[data-accent]'));
             accentEls.forEach(el => {
               const cs = doc.defaultView.getComputedStyle(el);
-              // inline important visual properties
               if (cs.backgroundColor && cs.backgroundColor !== 'rgba(0, 0, 0, 0)') el.style.setProperty('background-color', cs.backgroundColor, 'important');
               if (cs.borderColor) el.style.setProperty('border-color', cs.borderColor, 'important');
-              // ensure text inside accent areas is visible — prefer existing computed color, but force white for hero areas if background is dark
               const textColor = cs.color;
-              // if background is dark-ish, set white text for contrast
               const rgb = (cs.backgroundColor || '').match(/rgba?\(([^)]+)\)/);
               if (rgb) {
                 const parts = rgb[1].split(',').map(p => parseFloat(p.trim()));
@@ -374,12 +374,11 @@
                 const luminance = (0.2126*r + 0.7152*g + 0.0722*b);
                 if (luminance < 140) {
                   el.style.setProperty('color', '#ffffff', 'important');
-                  // headings inside
-                  Array.from(el.querySelectorAll('h1,h2,h3,h4,h5,h6,.name,.title,.summary')).forEach(h => {
+                  // only force heading tags to white (do NOT force .name)
+                  Array.from(el.querySelectorAll('h1,h2,h3,h4,h5,h6,.title,.summary')).forEach(h => {
                     h.style.setProperty('color', '#ffffff', 'important');
                   });
                 } else {
-                  // keep computed text color inline
                   if (textColor) el.style.setProperty('color', textColor, 'important');
                 }
               } else {
